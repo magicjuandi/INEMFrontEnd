@@ -1,76 +1,57 @@
-// MUI Imports
 import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 
-// Components Imports
-import Award from '@views/dashboard/Award'
-import Transactions from '@views/dashboard/Transactions'
-import WeeklyOverview from '@views/dashboard/WeeklyOverview'
-import TotalEarning from '@views/dashboard/TotalEarning'
-import LineChart from '@views/dashboard/LineChart'
-import DistributedColumnChart from '@views/dashboard/DistributedColumnChart'
-import DepositWithdraw from '@views/dashboard/DepositWithdraw'
-import SalesByCountries from '@views/dashboard/SalesByCountries'
-import CardStatVertical from '@components/card-statistics/Vertical'
-import Table from '@views/dashboard/Table'
+import KpiCards from '@views/dashboard/KpiCards'
+import EnergyWaterTrend from '@views/dashboard/EnergyWaterTrend'
+import WasteDonut from '@views/dashboard/WasteDonut'
+import GreenAreasSummary from '@views/dashboard/GreenAreasSummary'
+import PraeBarChart from '@views/dashboard/PraeBarChart'
 
-const DashboardAnalytics = () => {
+export const metadata = {
+  title: 'Resumen General — INEM Verde'
+}
+
+const Dashboard = () => {
   return (
     <Grid container spacing={6}>
-      <Grid item xs={12} md={4}>
-        <Award />
-      </Grid>
-      <Grid item xs={12} md={8} lg={8}>
-        <Transactions />
-      </Grid>
-      <Grid item xs={12} md={6} lg={4}>
-        <WeeklyOverview />
-      </Grid>
-      <Grid item xs={12} md={6} lg={4}>
-        <TotalEarning />
-      </Grid>
-      <Grid item xs={12} md={6} lg={4}>
-        <Grid container spacing={6}>
-          <Grid item xs={12} sm={6}>
-            <LineChart />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <CardStatVertical
-              title='Total Profit'
-              stats='$25.6k'
-              avatarIcon='ri-pie-chart-2-line'
-              avatarColor='secondary'
-              subtitle='Weekly Profit'
-              trendNumber='42%'
-              trend='positive'
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <CardStatVertical
-              stats='862'
-              trend='negative'
-              trendNumber='18%'
-              title='New Project'
-              subtitle='Yearly Project'
-              avatarColor='primary'
-              avatarIcon='ri-file-word-2-line'
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <DistributedColumnChart />
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12} md={6} lg={4}>
-        <SalesByCountries />
-      </Grid>
-      <Grid item xs={12} lg={8}>
-        <DepositWithdraw />
-      </Grid>
+
+      {/* Título */}
       <Grid item xs={12}>
-        <Table />
+        <Typography variant='h5' color='text.primary' className='font-semibold'>
+          Resumen General
+        </Typography>
+        <Typography variant='body2' color='text.secondary'>
+          Panel de Sostenibilidad Escolar — Mayo 2026
+        </Typography>
       </Grid>
+
+      {/* KPIs */}
+      <Grid item xs={12}>
+        <KpiCards />
+      </Grid>
+
+      {/* Tendencia energía + agua */}
+      <Grid item xs={12} lg={8}>
+        <EnergyWaterTrend />
+      </Grid>
+
+      {/* Composición residuos */}
+      <Grid item xs={12} lg={4}>
+        <WasteDonut />
+      </Grid>
+
+      {/* Gestión PRAE */}
+      <Grid item xs={12} lg={8}>
+        <PraeBarChart />
+      </Grid>
+
+      {/* Áreas verdes */}
+      <Grid item xs={12} lg={4}>
+        <GreenAreasSummary />
+      </Grid>
+
     </Grid>
   )
 }
 
-export default DashboardAnalytics
+export default Dashboard
