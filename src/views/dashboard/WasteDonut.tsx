@@ -6,17 +6,19 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import type { ApexOptions } from 'apexcharts'
-import { mockData, CURRENT_IDX, fmtNum } from '@/data/mockEnvironmental'
+import type { ChartDataShape } from '@/hooks/useEnvironmentalData'
 
 const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexCharts'))
 
-const w = mockData.waste
-const organic     = w.organicKg[CURRENT_IDX]
-const recovered   = w.recoveredKg[CURRENT_IDX]
-const nonRecovered = w.nonRecoveredKg[CURRENT_IDX]
-const total = organic + recovered + nonRecovered
+type Props = { data: ChartDataShape; currentIdx: number }
 
-const WasteDonut = () => {
+const WasteDonut = ({ data, currentIdx }: Props) => {
+  const w = data.waste
+  const organic = w.organicKg[currentIdx]
+  const recovered = w.recoveredKg[currentIdx]
+  const nonRecovered = w.nonRecoveredKg[currentIdx]
+  const total = organic + recovered + nonRecovered
+
   const options: ApexOptions = {
     chart: { parentHeightOffset: 0, toolbar: { show: false } },
     labels: ['Orgánicos', 'Recuperados', 'No recuperados'],
@@ -38,7 +40,7 @@ const WasteDonut = () => {
 
   return (
     <Card className='bs-full'>
-      <CardHeader title='Composición de residuos' subheader='Mayo 2026' />
+      <CardHeader title='Composición de residuos' subheader={data.longLabels[currentIdx]} />
       <CardContent sx={{ pt: 0 }}>
         <AppReactApexCharts type='donut' height={220} width='100%' series={[organic, recovered, nonRecovered]} options={options} />
         <div className='flex flex-col gap-2 mbs-2'>

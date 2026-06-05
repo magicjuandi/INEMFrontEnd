@@ -81,17 +81,6 @@ const VerticalMenu = ({ scrollMenu }: { scrollMenu: (container: any, isPerfectSc
           </MenuItem>
         </MenuSection>
 
-        <MenuSection label='Gestión'>
-          <MenuItem href='/encuestas' icon={<i className='ri-survey-line' />}>
-            Encuesta mensual
-          </MenuItem>
-          <MenuItem href='/reportes' icon={<i className='ri-file-chart-line' />}>
-            Reportes
-          </MenuItem>
-          <MenuItem href='/account-settings' icon={<i className='ri-user-settings-line' />}>
-            Configuración
-          </MenuItem>
-        </MenuSection>
       </Menu>
     </ScrollWrapper>
   )

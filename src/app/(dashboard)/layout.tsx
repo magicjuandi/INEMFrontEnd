@@ -12,7 +12,6 @@ import Navbar from '@components/layout/vertical/Navbar'
 import VerticalFooter from '@components/layout/vertical/Footer'
 
 const Layout = async ({ children }: ChildrenType) => {
-  // Vars
   const direction = 'ltr'
 
   return (
