@@ -28,6 +28,17 @@ export function computeIndicators(
       organicKg: current.waste.organicKg,
       recoveredKg: current.waste.recoveredKg,
       nonRecoveredKg: current.waste.nonRecoveredKg,
+      paperCardboardKg: current.waste.paperCardboardKg,
+      officePaperKg: current.waste.officePaperKg,
+      newspaperKg: current.waste.newspaperKg,
+      plasticBottlesKg: current.waste.plasticBottlesKg,
+      plasticCapsKg: current.waste.plasticCapsKg,
+      recyclablesTotalKg:
+        (current.waste.paperCardboardKg ?? 0) +
+        (current.waste.officePaperKg ?? 0) +
+        (current.waste.newspaperKg ?? 0) +
+        (current.waste.plasticBottlesKg ?? 0) +
+        (current.waste.plasticCapsKg ?? 0),
       totalKg: calcTotalWaste(
         current.waste.organicKg ?? 0,
         current.waste.recoveredKg ?? 0,
@@ -67,7 +78,16 @@ export function emptyRecord(year: number, month: number): EnvironmentalMonthlyRe
     status: 'draft',
     energy: { consumptionKwh: null, costAmount: null },
     water: { consumptionM3: null, costAmount: null },
-    waste: { organicKg: null, recoveredKg: null, nonRecoveredKg: null },
+    waste: {
+      organicKg: null,
+      recoveredKg: null,
+      nonRecoveredKg: null,
+      paperCardboardKg: null,
+      officePaperKg: null,
+      newspaperKg: null,
+      plasticBottlesKg: null,
+      plasticCapsKg: null
+    },
     greenAreas: { maintainedAreaM2: null, plantedTreesCount: null, cleanupDaysCount: null },
     prae: { executedActivitiesCount: null, participatingStudentsCount: null, drillsCount: null }
   }

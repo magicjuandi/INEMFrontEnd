@@ -17,9 +17,19 @@ const LONG: Record<number, string> = {
 export type ChartDataShape = {
   labels: string[]
   longLabels: string[]
+  locations: string[]
   energy: { consumptionKwh: number[]; costAmount: number[] }
   water: { consumptionM3: number[]; costAmount: number[] }
-  waste: { organicKg: number[]; recoveredKg: number[]; nonRecoveredKg: number[] }
+  waste: {
+    organicKg: number[]
+    recoveredKg: number[]
+    nonRecoveredKg: number[]
+    paperCardboardKg: number[]
+    officePaperKg: number[]
+    newspaperKg: number[]
+    plasticBottlesKg: number[]
+    plasticCapsKg: number[]
+  }
   greenAreas: { maintainedAreaM2: number[]; plantedTreesCount: number[]; cleanupDaysCount: number[] }
   prae: { executedActivitiesCount: number[]; participatingStudentsCount: number[]; drillsCount: number[] }
 }
@@ -33,6 +43,7 @@ function buildChartData(records: EnvironmentalMonthlyRecord[]): ChartDataShape {
   return {
     labels: sorted.map(r => SHORT[r.month] ?? String(r.month)),
     longLabels: sorted.map(r => `${LONG[r.month] ?? r.month} ${r.year}`),
+    locations: sorted.map(r => r.location ?? ''),
     energy: {
       consumptionKwh: sorted.map(r => n(r.energy.consumptionKwh)),
       costAmount: sorted.map(r => n(r.energy.costAmount)),
@@ -45,6 +56,11 @@ function buildChartData(records: EnvironmentalMonthlyRecord[]): ChartDataShape {
       organicKg: sorted.map(r => n(r.waste.organicKg)),
       recoveredKg: sorted.map(r => n(r.waste.recoveredKg)),
       nonRecoveredKg: sorted.map(r => n(r.waste.nonRecoveredKg)),
+      paperCardboardKg: sorted.map(r => n(r.waste.paperCardboardKg)),
+      officePaperKg: sorted.map(r => n(r.waste.officePaperKg)),
+      newspaperKg: sorted.map(r => n(r.waste.newspaperKg)),
+      plasticBottlesKg: sorted.map(r => n(r.waste.plasticBottlesKg)),
+      plasticCapsKg: sorted.map(r => n(r.waste.plasticCapsKg)),
     },
     greenAreas: {
       maintainedAreaM2: sorted.map(r => n(r.greenAreas.maintainedAreaM2)),

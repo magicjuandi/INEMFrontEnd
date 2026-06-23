@@ -14,6 +14,11 @@ export type WasteData = {
   organicKg: number | null
   recoveredKg: number | null
   nonRecoveredKg: number | null
+  paperCardboardKg: number | null
+  officePaperKg: number | null
+  newspaperKg: number | null
+  plasticBottlesKg: number | null
+  plasticCapsKg: number | null
 }
 
 export type GreenAreasData = {
@@ -33,6 +38,8 @@ export type EnvironmentalMonthlyRecord = {
   year: number
   month: number
   status: RecordStatus
+  location?: string | null
+  timestamp?: string | null
   energy: EnergyData
   water: WaterData
   waste: WasteData
@@ -55,6 +62,12 @@ export type ComputedIndicators = {
     organicKg: number | null
     recoveredKg: number | null
     nonRecoveredKg: number | null
+    paperCardboardKg: number | null
+    officePaperKg: number | null
+    newspaperKg: number | null
+    plasticBottlesKg: number | null
+    plasticCapsKg: number | null
+    recyclablesTotalKg: number
     totalKg: number
   }
   greenAreas: {

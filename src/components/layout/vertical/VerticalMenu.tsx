@@ -79,6 +79,9 @@ const VerticalMenu = ({ scrollMenu }: { scrollMenu: (container: any, isPerfectSc
           <MenuItem href='/biodiversidad' icon={<i className='ri-leaf-line' />}>
             Biodiversidad
           </MenuItem>
+          <MenuItem href='/prae' icon={<i className='ri-graduation-cap-line' />}>
+            Gestión PRAE
+          </MenuItem>
         </MenuSection>
 
       </Menu>

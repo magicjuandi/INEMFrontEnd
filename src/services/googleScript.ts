@@ -1,21 +1,35 @@
 import type { EnvironmentalMonthlyRecord } from '@/types/environmental'
 
+// Endpoint de escritura (Apps Script /exec) — usado por submitRecord
 const SCRIPT_URL =
   'https://script.google.com/macros/s/AKfycbw7cK3nZzUI8FJ4EIlmG1mTDYpBPE1nPsclzUbqToemIrIoEyCnZu6PLW6u16EcfGva/exec'
+
+// Endpoint de lectura de datos de sostenibilidad (contenido publicado)
+const READ_URL =
+  'https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnRN2CAy4kEcurwxFZJmmIfvmkAKa6q-wIgNt5uHXFQTesm6HOKOUpGV3ui_v2BUUNOPAhDdrqOTl1DCdL3k_5Ln1Y5lE-W0SVIvPmONpyk6-nPtOdF5GW6aCP-AI65lgQxJ4ToR64exlKBB2nqT3WftRzUDAyGVULjCEBQR8LIEHcT8rgQGPffF6PLgQl55vrPH3vHnTcZcqU4_C5H97OJJPWGaKRndBvQIl75trkcVKvqowSujItw6zjW_8XdZ0eaOczIeqeH69IUp3T1g3z4eSRPIcw&lib=MLoVPL3zK8Npcd1uT73nqqOEv5B5fQz8-'
 
 export type ApiResponse<T = unknown> = { ok: true; data: T } | { ok: false; error: string }
 
 type FlatRow = {
   fecha?: string
+  marca_temporal?: string
+  ubicacion?: string
   year?: number
   month?: number
   energia_kwh?: number | null
   costo_energia?: number | null
   agua_m3?: number | null
+  agua_consumo_m3?: number | null
   costo_agua?: number | null
+  agua_costo?: number | null
   residuos_organicos_kg?: number | null
   residuos_aprovechables_kg?: number | null
   residuos_no_aprovechables_kg?: number | null
+  residuos_papel_carton_kg?: number | null
+  residuos_papel_oficina_kg?: number | null
+  residuos_periodico_kg?: number | null
+  residuos_botellas_plasticas_kg?: number | null
+  residuos_tapas_plasticas_kg?: number | null
   area_zonas_verdes_m2?: number | null
   arboles_sembrados?: number | null
   jornadas_limpieza?: number | null
@@ -30,11 +44,13 @@ function mapFlatRow(row: FlatRow): EnvironmentalMonthlyRecord {
   let year: number
   let month: number
 
+  const fecha = row.fecha ?? row.marca_temporal
+
   if (row.year && row.month) {
     year = row.year
     month = row.month
-  } else if (row.fecha) {
-    const d = new Date(row.fecha)
+  } else if (fecha) {
+    const d = new Date(fecha)
     year = d.getFullYear()
     month = d.getMonth() + 1
   } else {
@@ -50,18 +66,25 @@ function mapFlatRow(row: FlatRow): EnvironmentalMonthlyRecord {
     year,
     month,
     status: (row.status as EnvironmentalMonthlyRecord['status']) ?? 'submitted',
+    location: row.ubicacion ?? null,
+    timestamp: row.marca_temporal ?? row.fecha ?? null,
     energy: {
       consumptionKwh: n(row.energia_kwh),
       costAmount: n(row.costo_energia),
     },
     water: {
-      consumptionM3: n(row.agua_m3),
-      costAmount: n(row.costo_agua),
+      consumptionM3: n(row.agua_consumo_m3 ?? row.agua_m3),
+      costAmount: n(row.agua_costo ?? row.costo_agua),
     },
     waste: {
       organicKg: n(row.residuos_organicos_kg),
       recoveredKg: n(row.residuos_aprovechables_kg),
       nonRecoveredKg: n(row.residuos_no_aprovechables_kg),
+      paperCardboardKg: n(row.residuos_papel_carton_kg),
+      officePaperKg: n(row.residuos_papel_oficina_kg),
+      newspaperKg: n(row.residuos_periodico_kg),
+      plasticBottlesKg: n(row.residuos_botellas_plasticas_kg),
+      plasticCapsKg: n(row.residuos_tapas_plasticas_kg),
     },
     greenAreas: {
       maintainedAreaM2: n(row.area_zonas_verdes_m2),
@@ -79,7 +102,7 @@ function mapFlatRow(row: FlatRow): EnvironmentalMonthlyRecord {
 function isFlat(row: unknown): row is FlatRow {
   if (!row || typeof row !== 'object') return false
   const r = row as Record<string, unknown>
-  return 'energia_kwh' in r || 'residuos_organicos_kg' in r || 'fecha' in r
+  return 'energia_kwh' in r || 'residuos_organicos_kg' in r || 'fecha' in r || 'marca_temporal' in r
 }
 
 function normalizeRecord(row: unknown): EnvironmentalMonthlyRecord {
@@ -93,7 +116,7 @@ export async function fetchRecords(params?: {
   month?: number
 }): Promise<ApiResponse<EnvironmentalMonthlyRecord[]>> {
   try {
-    const url = new URL(SCRIPT_URL)
+    const url = new URL(READ_URL)
     if (params) {
       Object.entries(params).forEach(([k, v]) => {
         if (v !== undefined) url.searchParams.set(k, String(v))

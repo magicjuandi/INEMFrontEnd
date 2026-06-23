@@ -17,6 +17,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import type { ApexOptions } from 'apexcharts'
 import { useEnvironmentalData } from '@/hooks/useEnvironmentalData'
+import RecyclablesBreakdown from '@/views/dashboard/RecyclablesBreakdown'
 
 const AppReactApexCharts = dynamic(() => import('@/libs/styles/AppReactApexCharts'))
 
@@ -131,6 +132,10 @@ const ResiduosPage = () => {
             />
           </CardContent>
         </Card>
+      </Grid>
+
+      <Grid item xs={12}>
+        <RecyclablesBreakdown data={data} currentIdx={currentIdx} />
       </Grid>
 
       <Grid item xs={12}>

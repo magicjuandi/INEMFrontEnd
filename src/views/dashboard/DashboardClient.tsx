@@ -9,6 +9,7 @@ import { useEnvironmentalData } from '@/hooks/useEnvironmentalData'
 import KpiCards from './KpiCards'
 import EnergyWaterTrend from './EnergyWaterTrend'
 import WasteDonut from './WasteDonut'
+import RecyclablesBreakdown from './RecyclablesBreakdown'
 import GreenAreasSummary from './GreenAreasSummary'
 import PraeBarChart from './PraeBarChart'
 
@@ -29,6 +30,7 @@ const DashboardClient = () => {
 
   const { data, currentIdx } = state
   const currentLabel = data.longLabels[currentIdx] ?? ''
+  const currentLocation = data.locations[currentIdx] ?? ''
 
   return (
     <Grid container spacing={6}>
@@ -38,6 +40,7 @@ const DashboardClient = () => {
         </Typography>
         <Typography variant='body2' color='text.secondary'>
           Panel de Sostenibilidad Escolar — {currentLabel}
+          {currentLocation ? ` · ${currentLocation}` : ''}
         </Typography>
       </Grid>
 
@@ -51,6 +54,10 @@ const DashboardClient = () => {
 
       <Grid item xs={12} lg={4}>
         <WasteDonut data={data} currentIdx={currentIdx} />
+      </Grid>
+
+      <Grid item xs={12}>
+        <RecyclablesBreakdown data={data} currentIdx={currentIdx} />
       </Grid>
 
       <Grid item xs={12} lg={8}>
