@@ -48,10 +48,20 @@ const BiodiversidadPage = () => {
 
   const totalTrees = g.plantedTreesCount.reduce((a, b) => a + b, 0)
 
+  // Factor de captura: un árbol absorbe en promedio ~22 kg de CO₂ por año
+  const CO2_KG_PER_TREE_YEAR = 22
+  const co2CapturedKgYear = totalTrees * CO2_KG_PER_TREE_YEAR
+  const co2Display =
+    co2CapturedKgYear >= 1000
+      ? `${(co2CapturedKgYear / 1000).toLocaleString('es-CO', { maximumFractionDigits: 2 })}`
+      : co2CapturedKgYear.toLocaleString('es-CO')
+  const co2Unit = co2CapturedKgYear >= 1000 ? 't CO₂/año' : 'kg CO₂/año'
+
   const greenKpis = [
     { label: 'Área mantenida', value: g.maintainedAreaM2[currentIdx].toLocaleString('es-CO'), unit: 'm²', icon: 'ri-map-2-line', trend: varPct(g.maintainedAreaM2, currentIdx), color: '#2F6F57', bg: 'rgba(47,111,87,0.10)', sub: 'vs. mes anterior' },
     { label: 'Árboles sembrados (mes)', value: g.plantedTreesCount[currentIdx].toLocaleString('es-CO'), unit: 'árboles', icon: 'ri-plant-line', trend: null, color: '#6FAE8A', bg: 'rgba(111,174,138,0.10)', sub: `Acumulado: ${totalTrees} árboles` },
-    { label: 'Jornadas de limpieza', value: g.cleanupDaysCount[currentIdx].toLocaleString('es-CO'), unit: 'jornadas', icon: 'ri-broom-line', trend: null, color: '#2D6E8A', bg: 'rgba(45,110,138,0.10)', sub: 'este mes' }
+    { label: 'Jornadas de limpieza', value: g.cleanupDaysCount[currentIdx].toLocaleString('es-CO'), unit: 'jornadas', icon: 'ri-broom-line', trend: null, color: '#2D6E8A', bg: 'rgba(45,110,138,0.10)', sub: 'este mes' },
+    { label: 'CO₂ capturado (estimado)', value: co2Display, unit: co2Unit, icon: 'ri-cloud-line', trend: null, color: '#2F6F57', bg: 'rgba(47,111,87,0.10)', sub: `${totalTrees} árboles × ${CO2_KG_PER_TREE_YEAR} kg/año` }
   ]
 
   const progressItems = [
@@ -108,7 +118,7 @@ const BiodiversidadPage = () => {
       </Grid>
 
       {greenKpis.map((k, i) => (
-        <Grid item xs={12} sm={6} md={4} key={i}>
+        <Grid item xs={12} sm={6} md={3} key={i}>
           <KpiCard k={k} />
         </Grid>
       ))}
