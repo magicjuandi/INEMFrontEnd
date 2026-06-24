@@ -6,7 +6,7 @@
   "packageManager": "pnpm@11.2.2",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run build:icons && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
